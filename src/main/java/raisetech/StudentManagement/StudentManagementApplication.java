@@ -22,28 +22,13 @@ public class StudentManagementApplication {
     SpringApplication.run(StudentManagementApplication.class, args);
   }
 
-  @GetMapping("/student")
-  public String getStudent(@RequestParam String name) {
-    Student student = repository.searchByName(name);
-    return student.getName() + " " + student.getAge() + "sai";
-  }
-
-  @PostMapping("/student")
-  public void setStudentInfo(String name, int age) {
-    repository.registerStudent(name, age);
-  }
-
-  @PatchMapping("/student")
-  public void updateStudentName(String name, int age) {
-    repository.updateStudent(name, age);
-  }
-
-  @DeleteMapping("/student")
-  public  void  deleteStudent(String name){
-    repository.deleteStudent(name);
-  }
   @GetMapping("/studentList")
-  public List<Student> getAllStudent() {
-    return repository.findAll();
+  public List<Student> getStudentList() {
+    return repository.findAllStudents();
   }
+  @GetMapping("/studentCoursesList")
+  public List<StudentCourses> getStudentCoursesList() {
+    return repository.findAllStudentsCourses();
+  }
+
 }
