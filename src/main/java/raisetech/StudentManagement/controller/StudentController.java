@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,9 @@ public class StudentController {
 
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
-    model.addAttribute("studentDetail", new StudentDetail());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+    model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
   }
 
@@ -56,9 +59,10 @@ public class StudentController {
     }
     //①新規受講生情報を登録する処理を実装
     service.registerStudent(studentDetail);
+    return "redirect:/studentList";
 
     //②コース情報も一緒に登録できるように実装する。コースは単体で良い。
 
-     return "redirect:/studentList";
+
   }
 }
