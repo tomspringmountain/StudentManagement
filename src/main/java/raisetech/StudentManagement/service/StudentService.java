@@ -16,26 +16,46 @@ public class StudentService {
   private StudentRepository repository;
 
   @Autowired
-  public StudentService(StudentRepository repository) {
+  public StudentService(StudentRepository repository){
     this.repository = repository;
   }
 
   public List<Student> searchStudentList() {
     return repository.search();
+
+  }
+
+  public StudentDetail searchStudent(String id) {
+  Student student = repository.searchStudent(id);
+  List<StudentsCourses> studentsCourses = repository.searchStudentsCourses(student.getId());
+  StudentDetail studentDetail = new StudentDetail();
+  studentDetail.setStudent(student);
+  studentDetail.setStudentsCourses(studentsCourses);
+  return studentDetail;
   }
 
   public List<StudentsCourses> searchStudentsCourseList() {
-    return repository.searchStudentsCourse();
+    return repository.searchStudentsCoursesList();
   }
-@Transactional
-  public void registerStudent(StudentDetail studentDetail){
+
+  @Transactional
+  public void registerStudent(StudentDetail studentDetail) {
     repository.registerStudent(studentDetail.getStudent());
-  //コース情報　Repository追加したらできる。
     for (StudentsCourses studentsCourses : studentDetail.getStudentsCourses()) {
       studentsCourses.setStudentId(studentDetail.getStudent().getId());
       studentsCourses.setCourseStartAt(LocalDateTime.now());
       studentsCourses.setCourseEndAt(LocalDateTime.now().plusYears(1));
       repository.registerStudentsCourses(studentsCourses);
+
+    }
+  }
+
+  @Transactional
+  public void updateStudent(StudentDetail studentDetail) {
+    repository.updateStudent(studentDetail.getStudent());
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
+//      studentsCourse.setStudentId(studentDetail.getStudent().getId());
+      repository.updateStudentsCourses(studentsCourse);
 
     }
   }
