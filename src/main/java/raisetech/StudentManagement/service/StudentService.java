@@ -16,7 +16,7 @@ public class StudentService {
   private StudentRepository repository;
 
   @Autowired
-  public StudentService(StudentRepository repository){
+  public StudentService(StudentRepository repository) {
     this.repository = repository;
   }
 
@@ -26,12 +26,12 @@ public class StudentService {
   }
 
   public StudentDetail searchStudent(String id) {
-  Student student = repository.searchStudent(id);
-  List<StudentsCourses> studentsCourses = repository.searchStudentsCourses(student.getId());
-  StudentDetail studentDetail = new StudentDetail();
-  studentDetail.setStudent(student);
-  studentDetail.setStudentsCourses(studentsCourses);
-  return studentDetail;
+    Student student = repository.searchStudent(id);
+    List<StudentsCourses> studentsCourses = repository.searchStudentsCourses(student.getId());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentsCourses(studentsCourses);
+    return studentDetail;
   }
 
   public List<StudentsCourses> searchStudentsCourseList() {
