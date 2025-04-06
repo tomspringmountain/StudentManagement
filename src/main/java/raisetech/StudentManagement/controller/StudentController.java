@@ -1,12 +1,13 @@
 package raisetech.StudentManagement.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.exception.TestException;
 import raisetech.StudentManagement.service.StudentService;
 
 @Slf4j
@@ -41,8 +44,10 @@ public class StudentController {
    * @return 受講生詳細一覧(全件)
    */
   @GetMapping("/studentList")
-  public List<StudentDetail> getStudentList() {
-    return service.searchStudentList();
+  public List<StudentDetail> getStudentList() throws TestException {
+//    throw new TestException(
+//        "現在このAPIは利用できません。URLは「studentList」ではなく「students」を利用してください。");
+   return service.searchStudentList();
   }
 
   /**
@@ -67,7 +72,7 @@ public class StudentController {
 
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(
-      @RequestBody StudentDetail studentDetail) {
+      @RequestBody @Valid StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
     return ResponseEntity.ok(responseStudentDetail);
   }
@@ -80,8 +85,28 @@ public class StudentController {
    * @return 実行結果
    */
   @PutMapping("/updateStudent")
-  public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
+  public ResponseEntity<String> updateStudent(
+      @RequestBody @Valid StudentDetail studentDetail) {
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
   }
+
+//  @ExceptionHandler(TestException.class)
+//  public  ResponseEntity<String> handleTestException(TestException ex){
+//    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+//  }
+//@PostMapping("/registerStudent")
+//public ResponseEntity<String> ValidationException(String message) {
+//  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("カタカナで入力してください。");
+//}
+@PostMapping("/testRegister")
+public ResponseEntity<String> register()
+    throws ValidationException {
+  // ここで独自のロジックによってエラーを投げることも可能
+//  if (!student.getKanaName().matches("^[ァ-ヶー　]+$"))
+    throw new ValidationException("フリガナはカタカナで入力してください。");
+
+//  return ResponseEntity.ok("登録成功しました。");
+}
+
 }
