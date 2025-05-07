@@ -78,6 +78,21 @@ public class StudentService {
    * 受講生コース情報を登録する際の初期情報を設定する。
    *
    * @param studentCourse 受講生コース情報
+   * @param id 受講生
+   */
+
+  void initStudentsCourse(StudentCourse studentCourse, String id) {
+    LocalDateTime now = LocalDateTime.now();
+
+    studentCourse.setStudentId(id);
+    studentCourse.setCourseStartAt(now);
+    studentCourse.setCourseEndAt(now.plusYears(1));
+  }
+
+  /**
+   * 受講生コース情報を登録する際の初期情報を設定する。
+   *
+   * @param studentCourse 受講生コース情報
    * @param student 受講生
    */
 
