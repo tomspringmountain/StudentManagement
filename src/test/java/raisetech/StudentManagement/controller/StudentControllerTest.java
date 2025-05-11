@@ -56,6 +56,8 @@ class StudentControllerTest {
   @Test
   void 受講生詳細の登録が実行できて空で返ってくること()
       throws Exception {
+    //リクエストデータは適切に構築して入力チェックの検証も兼ねている。
+    //本来であれば返りは登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない。
     mockMvc.perform(post("/registerStudent").contentType(MediaType.APPLICATION_JSON).content(
             """
                  {
