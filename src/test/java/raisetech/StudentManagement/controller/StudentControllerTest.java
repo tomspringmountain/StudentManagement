@@ -121,12 +121,12 @@ class StudentControllerTest {
 //            assertThat(result.getResolvedException()).isInstanceOf(ValidationException.class));
 //  }
 
-//  @Test
-//  void 受講生詳細の例外APIが実行できてステータスが400で返ってくること() throws Exception{
-//    mockMvc.perform(get("/excpetion"))
-//        .andExpect(status().is4xxClientError())
-//        .andExpect(content().string("APIこのは現在利用できません。古いURLとなっています。"));
-//  }
+  @Test
+  void 受講生詳細の例外APIが実行できてステータスが400で返ってくること() throws Exception{
+    mockMvc.perform(get("/exception"))
+        .andExpect(status().is4xxClientError())
+        .andExpect(content().string("このAPIは現在利用できません。古いURLとなっています。"));
+  }
 
 
   @Test

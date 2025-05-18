@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.exception.TestException;
 import raisetech.StudentManagement.service.StudentService;
 
@@ -102,10 +102,6 @@ public class StudentController {
 //  return ResponseEntity.ok("登録成功しました。");
 //  }
 
-  //  @GetMapping("/exception")
-//  public ResponseEntity<String> handleOtherExceptions() throws NotFoundException{
-//    throw new NotFoundException("このAPIは現在利用できません。古いURLとなっています。");
-//  }
   @GetMapping("/exception")
   public ResponseEntity<String> triggerException() throws NotFoundException {
     throw new NotFoundException("このAPIは現在利用できません。古いURLとなっています。");
