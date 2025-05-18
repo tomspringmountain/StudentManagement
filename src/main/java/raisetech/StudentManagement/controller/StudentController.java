@@ -1,7 +1,6 @@
 package raisetech.StudentManagement.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
@@ -97,14 +96,18 @@ public class StudentController {
 //  @PostMapping("/testRegister")
 //  public ResponseEntity<String> register()
 //      throws ValidationException {
-    //  if (!student.getKanaName().matches("^[ァ-ヶー　]+$"))
+  //  if (!student.getKanaName().matches("^[ァ-ヶー　]+$"))
 //    throw new ValidationException("フリガナはカタカナで入力してください。");
 
 //  return ResponseEntity.ok("登録成功しました。");
 //  }
 
-//  @GetMapping("/exception")
-//  public ResponseEntity<String> throwException() throws NotFoundException{
+  //  @GetMapping("/exception")
+//  public ResponseEntity<String> handleOtherExceptions() throws NotFoundException{
 //    throw new NotFoundException("このAPIは現在利用できません。古いURLとなっています。");
 //  }
+  @GetMapping("/exception")
+  public ResponseEntity<String> triggerException() throws NotFoundException {
+    throw new NotFoundException("このAPIは現在利用できません。古いURLとなっています。");
+  }
 }
