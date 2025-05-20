@@ -32,10 +32,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     // 他の例外の共通処理（任意）
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<String> handleOtherExceptions(Exception ex) {
-//      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("予期しないエラーが発生しました。");
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleOtherExceptions(Exception ex) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("予期しないエラーが発生しました。");
+    }
   }
 
 
