@@ -45,7 +45,7 @@ class StudentControllerTest {
   }
 
   @Test
-  void 受講生詳細の検索が出来て空で返ってくること() throws Exception {
+  void 指定IDで受講生詳細の検索ができ正常ステータスが返ってくること() throws Exception {
     String id = "999";
     mockMvc.perform(get("/student/{id}", id))
         .andExpect(status().isOk());
@@ -54,10 +54,8 @@ class StudentControllerTest {
   }
 
   @Test
-  void 受講生詳細の登録が実行できて空で返ってくること()
+  void 受講生詳細を登録すると登録内容が返されること()
       throws Exception {
-    //リクエストデータは適切に構築して入力チェックの検証も兼ねている。
-    //本来であれば返りは登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない。
     mockMvc.perform(post("/registerStudent").contentType(MediaType.APPLICATION_JSON).content(
             """
                  {
@@ -85,8 +83,8 @@ class StudentControllerTest {
   }
 
   @Test
-  void 受講生詳細の更新ができて空で返ってくること()
-      throws Exception {
+  void 受講生詳細の更新が成功し成功メッセージが返されること()
+  throws Exception {
     mockMvc.perform(put("/updateStudent").contentType(MediaType.APPLICATION_JSON).content(
             """
                 {
@@ -107,8 +105,8 @@ class StudentControllerTest {
                 }
                 """
         ))
-        .andExpect(status().isOk());
-//        .andExpect(content().string("更新処理が成功しました。"));
+        .andExpect(status().isOk())
+        .andExpect(content().string("更新処理が成功しました。"));
 
     verify(service, times(1)).updateStudent(any());
   }
@@ -131,14 +129,18 @@ class StudentControllerTest {
 
   @Test
   void 受講生詳細の受講生で適切な値を入力した時に入力チェックに異常が発生しないこと() {
-    Student student = new Student();
-    student.setId("1");
-    student.setName("江並公史");
-    student.setKanaName("エナミコウジ");
-    student.setNickname("コウジ");
-    student.setEmail("test@example.com");
-    student.setArea("奈良");
-    student.setSex("男性");
+    Student student = new Student(
+        "1",
+        "江並公史",
+        "エナミコウジ",
+        "コウジ",
+        "test@example.com",
+        "奈良",
+        30,
+        "男性",
+        "",
+        false
+    );
 
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -148,14 +150,18 @@ class StudentControllerTest {
 
   @Test
   void 受講生詳細の受講生でIDに数字以外を用いた時に入力チェックに掛かること() {
-    Student student = new Student();
-    student.setId("テストです。");
-    student.setName("江並公史");
-    student.setKanaName("エナミコウジ");
-    student.setNickname("コウジ");
-    student.setEmail("test@example.com");
-    student.setArea("奈良");
-    student.setSex("男性");
+    Student student = new Student(
+        "テストです",
+        "江並公史",
+        "エナミコウジ",
+        "コウジ",
+        "test@example.com",
+        "奈良",
+        30,
+        "男性",
+        "",
+        false
+    );
 
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
