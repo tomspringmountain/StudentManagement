@@ -20,3 +20,11 @@ course_name varchar(100) NOT NULL,
 course_start_at TIMESTAMP,
 course_end_at TIMESTAMP
 );
+
+CREATE TABLE students_courses_statuses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  student_course_id INT NOT NULL,
+  status ENUM('仮申込','本申込','受講中','受講終了') NOT NULL,
+--  status VARCHAR(20) NOT NULL,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

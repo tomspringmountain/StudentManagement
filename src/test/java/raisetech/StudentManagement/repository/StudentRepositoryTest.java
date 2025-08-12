@@ -9,6 +9,9 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.data.StudentsCoursesStatuses;
+import raisetech.StudentManagement.data.StudentsCoursesStatuses.Status;
+
 
 @MybatisTest
 class StudentRepositoryTest {
@@ -145,4 +148,66 @@ class StudentRepositoryTest {
 
     assertThat(isUpdated).isTrue();
   }
+
+//  @Test
+//  void 学生IDからステータス情報が取得できること() {
+//    List<StudentsCoursesStatuses> actual = sut.searchStudentStatuses("1");
+//
+//    assertThat(actual).isNotEmpty();
+//    assertThat(actual)
+//        .extracting(StudentsCoursesStatuses::getStatus)
+//        .containsAnyOf(Status.仮申込, Status.本申込);
+//  }
+
+  @Test
+  void studentCourseIdからステータス情報が1件取得できること() {
+    StudentsCoursesStatuses actual = sut.findByStudentCourseId(101L); // 例: 101 は DB に存在する ID
+
+    assertThat(actual).isNotNull();
+    assertThat(actual.getStudentCourseId()).isEqualTo(101L);
+    assertThat(actual.getStatus()).isIn(Status.仮申込, Status.本申込);
+  }
+
+  @Test
+  void ステータスを新規登録できること() {
+    StudentsCoursesStatuses newStatus = new StudentsCoursesStatuses();
+    newStatus.setStudentCourseId(104L); // 存在する student_course_id を指定
+    newStatus.setStatus(Status.仮申込);
+    newStatus.setUpdatedAt(LocalDateTime.now());
+
+    sut.insert(newStatus);
+
+    StudentsCoursesStatuses inserted = sut.findByStudentCourseId(104L);
+    assertThat(inserted).isNotNull();
+    assertThat(inserted.getStatus()).isEqualTo(Status.仮申込);
+  }
+
+  @Test
+  void ステータスを更新できること() {
+    StudentsCoursesStatuses status = sut.findByStudentCourseId(102L); // 例: 事前に存在しているもの
+
+    status.setStatus(Status.本申込);
+    status.setUpdatedAt(LocalDateTime.now());
+
+    sut.update(status);
+
+    StudentsCoursesStatuses updated = sut.findByStudentCourseId(102L);
+    assertThat(updated.getStatus()).isEqualTo(Status.本申込);
+  }
+
+  @Test
+  void ステータスを削除できること() {
+    StudentsCoursesStatuses status = sut.findByStudentCourseId(103L); // 存在する ID を想定
+
+    assertThat(status).isNotNull();
+
+    sut.delete(status.getId());
+
+//    StudentsCoursesStatuses deleted = sut.findByStudentCourseId(104L);
+//    assertThat(deleted).isNull();
+    List<StudentsCoursesStatuses> remaining = sut.findAll();
+    assertThat(remaining).noneMatch(s -> s.getStudentCourseId().equals(103L));
+
+  }
+
 }

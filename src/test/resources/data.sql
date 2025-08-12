@@ -18,3 +18,9 @@ VALUES
 (1, 'Photo', '2024-12-18', '2026-01-31'),
 (4, 'WebDesign', '2024-06-20', '2025-11-30'),
 (5, 'Marketing', '2024-08-11', '2025-06-30');
+
+INSERT INTO students_courses_statuses (student_course_id, status, updated_at)
+VALUES
+  (101, '仮申込', NOW()),
+  (102, '仮申込', NOW()),
+  (103, '仮申込', NOW());

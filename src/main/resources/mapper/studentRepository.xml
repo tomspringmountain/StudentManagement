@@ -53,4 +53,40 @@
     WHERE id = #{id}
   </update>
 
+  <!-- students_courses_statuses の全件取得 -->
+  <select id="findAll" resultType="raisetech.StudentManagement.data.StudentsCoursesStatuses">
+    SELECT * FROM students_courses_statuses
+  </select>
+
+  <!-- student_course_id を指定して status を1件取得 -->
+  <select id="findByStudentCourseId" resultType="raisetech.StudentManagement.data.StudentsCoursesStatuses">
+    SELECT * FROM students_courses_statuses WHERE student_course_id = #{studentCourseId}
+  </select>
+
+  <!-- status を登録 -->
+  <insert id="insert" parameterType="raisetech.StudentManagement.data.StudentsCoursesStatuses"
+    useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO students_courses_statuses (student_course_id, status, updated_at)
+    VALUES (#{studentCourseId}, #{status}, #{updatedAt})
+  </insert>
+
+
+  <!-- status を更新 -->
+  <update id="update" parameterType="raisetech.StudentManagement.data.StudentsCoursesStatuses">
+    UPDATE students_courses_statuses
+    SET status = #{status}, updated_at = #{updatedAt}
+    WHERE id = #{id}
+  </update>
+
+  <!-- status を削除 -->
+  <delete id="delete" parameterType="java.lang.Long">
+    DELETE FROM students_courses_statuses WHERE id = #{id}
+  </delete>
+
+  <!-- mapper.xml -->
+<!--  <insert id="registerStudentCourse" useGeneratedKeys="true" keyProperty="id">-->
+<!--    INSERT INTO students_courses (student_id, course_name, course_start_at, course_end_at)-->
+<!--    VALUES (#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt});-->
+<!--  </insert>-->
+
 </mapper>

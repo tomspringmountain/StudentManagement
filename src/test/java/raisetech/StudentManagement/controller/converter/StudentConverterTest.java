@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.data.StudentsCoursesStatuses;
+import raisetech.StudentManagement.data.StudentsCoursesStatuses.Status;
 import raisetech.StudentManagement.domain.StudentDetail;
 
 class StudentConverterTest {
@@ -24,20 +26,25 @@ class StudentConverterTest {
     Student student = createStudent();
 
     StudentCourse studentCourse = new StudentCourse();
-    studentCourse.setId("1");
+    studentCourse.setId(1L);
     studentCourse.setStudentId("1");
     studentCourse.setCourseName("Javaコース");
     studentCourse.setCourseStartAt(LocalDateTime.now());
     studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
 
+    StudentsCoursesStatuses status = new StudentsCoursesStatuses();
+    status.setStudentCourseId(1L);
+    status.setStatus(Status.本申込);
+
     List<Student> studentList = List.of(student);
     List<StudentCourse> studentCourseList = List.of(studentCourse);
+    List<StudentsCoursesStatuses> statusList = List.of(status);
 
-    List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList);
+    List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList, statusList);
 
     assertThat(actual.get(0).getStudent()).isEqualTo(student);
-    assertThat(actual.get(0).getStudentCourseList()).isEqualTo(studentCourseList);
-
+    assertThat(actual.get(0).getStudentCourseList()).hasSize(1);
+    assertThat(actual.get(0).getStudentCourseList().get(0).getStatusList()).containsExactly(status);
   }
 
   @Test
@@ -45,19 +52,26 @@ class StudentConverterTest {
     Student student = createStudent();
 
     StudentCourse studentCourse = new StudentCourse();
-    studentCourse.setId("1");
-    studentCourse.setStudentId("2");
+    studentCourse.setId(1L);
+    studentCourse.setStudentId("2"); // 紐付かない studentId
     studentCourse.setCourseName("Javaコース");
     studentCourse.setCourseStartAt(LocalDateTime.now());
     studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
 
+    // 一応ステータスを作るが紐付かない
+    StudentsCoursesStatuses status = new StudentsCoursesStatuses();
+    status.setStudentCourseId(1L);
+    status.setStatus(Status.仮申込);
+
     List<Student> studentList = List.of(student);
     List<StudentCourse> studentCourseList = List.of(studentCourse);
+    List<StudentsCoursesStatuses> statusList = List.of(status);
 
-    List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList);
+    List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList, statusList);
 
     assertThat(actual.get(0).getStudent()).isEqualTo(student);
     assertThat(actual.get(0).getStudentCourseList()).isEmpty();
+    assertThat(actual.get(0).getStatusesList()).isNull();
   }
 
   private static Student createStudent() {
