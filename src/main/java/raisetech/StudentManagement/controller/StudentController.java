@@ -47,7 +47,6 @@ public class StudentController {
    */
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() throws TestException {
-
     return service.searchStudentList();
   }
 
@@ -91,6 +90,7 @@ public class StudentController {
   }
 
 
+
   @GetMapping("/exception")
   public ResponseEntity<String> triggerException() throws NotFoundException {
     throw new NotFoundException("このAPIは現在利用できません。古いURLとなっています。");
@@ -122,6 +122,7 @@ public ResponseEntity<StudentsCoursesStatuses> insertStatus(
   );
   return ResponseEntity.ok(inserted);
 }
+
 
   @GetMapping("/studentsCoursesStatuses/{studentCourseId}")
   public ResponseEntity<StudentsCoursesStatuses> getStatus(@PathVariable Long studentCourseId) {

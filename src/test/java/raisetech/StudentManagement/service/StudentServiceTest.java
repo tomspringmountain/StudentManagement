@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.service;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,8 +39,6 @@ class StudentServiceTest {
 
   private StudentService sut;
 
-//  @Mock
-//  private StudentsCourseStatusMapper statusMapper; // ←追加
 
   @BeforeEach
   void before() {
@@ -50,7 +49,9 @@ class StudentServiceTest {
   void 受講生詳細の一覧検索_リポジトリとコンバーターの処理が適切に呼び出せていること() {
     List<Student> studentList = new ArrayList<>();
     List<StudentCourse> studentCourseList = new ArrayList<>();
+
     List<StudentsCoursesStatuses> statusesList = new ArrayList<>();
+
     when(repository.search()).thenReturn(studentList);
     when(repository.searchStudentCourseList()).thenReturn(studentCourseList);
 
@@ -58,7 +59,9 @@ class StudentServiceTest {
 
     verify(repository, times(1)).search();
     verify(repository, times(1)).searchStudentCourseList();
+
     verify(converter, times(1)).convertStudentDetails(studentList, studentCourseList,statusesList);
+
   }
 
   @Test
@@ -66,6 +69,7 @@ class StudentServiceTest {
     String id = "999";
     Student student = new Student();
     student.setId(id);
+
 
     List<StudentCourse> courseList = new ArrayList<>();
     List<StudentsCoursesStatuses> statusesList = new ArrayList<>();
@@ -89,13 +93,16 @@ class StudentServiceTest {
     assertThat(actual.getStatusesList()).isEqualTo(statusesList);
   }
 
+
   @Test
   void 受講生詳細の登録_リポジトリの処理が適切に呼び出されていること() {
     Student student = new Student();
     StudentCourse studentCourse = new StudentCourse();
     List<StudentCourse> studentCourseList = List.of(studentCourse);
+
     List<StudentsCoursesStatuses> statusesList = new ArrayList<>();
     StudentDetail studentDetail = new StudentDetail(student, studentCourseList, statusesList);
+
 
     sut.registerStudent(studentDetail);
 
@@ -122,14 +129,17 @@ class StudentServiceTest {
     Student student = new Student();
     StudentCourse studentCourse = new StudentCourse();
     List<StudentCourse> studentCourseList = List.of(studentCourse);
+
     List<StudentsCoursesStatuses> statusesList = new ArrayList<>();
     StudentDetail studentDetail = new StudentDetail(student, studentCourseList, statusesList);
+
 
     sut.updateStudent(studentDetail);
 
     verify(repository, times(1)).updateStudent(student);
     verify(repository, times(1)).updateStudentCourse(studentCourse);
   }
+
   @Test
   void ステータス登録処理が正しく行われること() {
     Long studentCourseId = 1L;
@@ -192,6 +202,7 @@ class StudentServiceTest {
 
     verify(repository).delete(id);
   }
+
 
 }
 
