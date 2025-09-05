@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.service;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +29,7 @@ import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 
 
+
 @ExtendWith(MockitoExtension.class)
 class StudentServiceTest {
 
@@ -37,6 +40,7 @@ class StudentServiceTest {
   private StudentConverter converter;
 
   private StudentService sut;
+
 
 //  @Mock
 //  private StudentsCourseStatusMapper statusMapper; // ←追加
@@ -51,6 +55,7 @@ class StudentServiceTest {
     List<Student> studentList = new ArrayList<>();
     List<StudentCourse> studentCourseList = new ArrayList<>();
     List<StudentsCoursesStatuses> statusesList = new ArrayList<>();
+
     when(repository.search()).thenReturn(studentList);
     when(repository.searchStudentCourseList()).thenReturn(studentCourseList);
 
@@ -59,6 +64,7 @@ class StudentServiceTest {
     verify(repository, times(1)).search();
     verify(repository, times(1)).searchStudentCourseList();
     verify(converter, times(1)).convertStudentDetails(studentList, studentCourseList,statusesList);
+
   }
 
   @Test
@@ -97,6 +103,7 @@ class StudentServiceTest {
     List<StudentsCoursesStatuses> statusesList = new ArrayList<>();
     StudentDetail studentDetail = new StudentDetail(student, studentCourseList, statusesList);
 
+
     sut.registerStudent(studentDetail);
 
     verify(repository, times(1)).registerStudent(student);
@@ -125,11 +132,13 @@ class StudentServiceTest {
     List<StudentsCoursesStatuses> statusesList = new ArrayList<>();
     StudentDetail studentDetail = new StudentDetail(student, studentCourseList, statusesList);
 
+
     sut.updateStudent(studentDetail);
 
     verify(repository, times(1)).updateStudent(student);
     verify(repository, times(1)).updateStudentCourse(studentCourse);
   }
+
   @Test
   void ステータス登録処理が正しく行われること() {
     Long studentCourseId = 1L;

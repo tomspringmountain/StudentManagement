@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import raisetech.StudentManagement.data.StudentsCoursesStatuses;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.exception.NotFoundException;
@@ -91,6 +92,7 @@ public class StudentController {
   }
 
 
+
   @GetMapping("/exception")
   public ResponseEntity<String> triggerException() throws NotFoundException {
     throw new NotFoundException("このAPIは現在利用できません。古いURLとなっています。");
@@ -122,6 +124,7 @@ public ResponseEntity<StudentsCoursesStatuses> insertStatus(
   );
   return ResponseEntity.ok(inserted);
 }
+
 
   @GetMapping("/studentsCoursesStatuses/{studentCourseId}")
   public ResponseEntity<StudentsCoursesStatuses> getStatus(@PathVariable Long studentCourseId) {

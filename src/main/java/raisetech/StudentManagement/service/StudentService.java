@@ -132,6 +132,7 @@ public class StudentService {
     repository.registerStudent(student);
 
     for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
+
       // 受講生IDをコースにセット
       studentCourse.setStudentId(student.getId());
 
