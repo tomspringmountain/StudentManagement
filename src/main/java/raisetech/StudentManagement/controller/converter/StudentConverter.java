@@ -2,10 +2,13 @@ package raisetech.StudentManagement.controller.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.data.StudentsCoursesStatuses;
 import raisetech.StudentManagement.domain.StudentDetail;
 
 /**
@@ -16,28 +19,40 @@ import raisetech.StudentManagement.domain.StudentDetail;
 public class StudentConverter {
 
   /**
-   * 受講生に紐づく受講生コース情報をマッピングする
-   * 受講生コース情報は受講生に対して複数存在するのでループを回して受講生詳細情報を組み立てる。
+   * 受講生に紐づく受講生コース情報をマッピングする 受講生コース情報は受講生に対して複数存在するのでループを回して受講生詳細情報を組み立てる。
    *
-   * @param studentsList　受講生一覧
-   * @param studentsCourseList　受講生コース情報のリスト
+   * @param studentsList       　受講生一覧
+   * @param studentsCourseList 　受講生コース情報のリスト
    * @return 受講生詳細情報のリスト
    */
-  public List<StudentDetail> convertStudentDetails(List<Student> studentsList,
-      List<StudentCourse> studentsCourseList) {
-    List<StudentDetail> studentDetails = new ArrayList<>();
-    studentsList.forEach(student -> {
-      StudentDetail studentDetail = new StudentDetail();
-      studentDetail.setStudent(student);
+  public List<StudentDetail> convertStudentDetails(
+      List<Student> studentsList,
+      List<StudentCourse> studentsCourseList,
+      List<StudentsCoursesStatuses> statuses
+  ) {
+    List<StudentDetail> result = new ArrayList<>();
 
-      List<StudentCourse> convertStudentCourseList = studentsCourseList.stream()
-          .filter(studentCourse -> student.getId().equals(studentCourse.getStudentId()))
+    for (Student student : studentsList) {
+      StudentDetail detail = new StudentDetail();
+      detail.setStudent(student);
+
+      // この student に属するコースを抽出
+      List<StudentCourse> courseList = studentsCourseList.stream()
+          .filter(course -> Objects.equals(course.getStudentId(), student.getId()))
           .collect(Collectors.toList());
 
-      studentDetail.setStudentCourseList(convertStudentCourseList);
-      studentDetails.add(studentDetail);
-    });
-    return studentDetails;
-  }
+      // 各 course に statusList をセット
+      for (StudentCourse course : courseList) {
+        List<StudentsCoursesStatuses> courseStatuses = statuses.stream()
+            .filter(status -> Objects.equals(status.getStudentCourseId(), course.getId()))
+            .collect(Collectors.toList());
+        course.setStatusList(courseStatuses);
+      }
 
+      detail.setStudentCourseList(courseList);
+      result.add(detail);
+    }
+
+    return result;
+  }
 }

@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.repository;
 
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -8,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.data.StudentsCoursesStatuses;
 
 /**
  * 受講生テーブルと受講生コース情報テーブルと紐づくRepositoryです。
@@ -73,4 +75,19 @@ public interface StudentRepository {
    * @param studentCourse 受講生コース情報
    */
   void updateStudentCourse(StudentCourse studentCourse);
+
+
+  List<StudentsCoursesStatuses> searchStudentStatuses(String studentId);
+
+  List<StudentsCoursesStatuses> findAll();
+  StudentsCoursesStatuses findByStudentCourseId(Long studentCourseId);
+
+  void insert(StudentsCoursesStatuses status);
+  void update(StudentsCoursesStatuses status);
+  void delete(Long status);
+
+  void insertStatus(StudentsCoursesStatuses status);
 }
+
+
+
