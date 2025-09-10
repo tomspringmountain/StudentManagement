@@ -74,8 +74,8 @@ jobs:
           SuccessExitStatus = 143
           
           [Install]
-          WentedBy = multi-user.target
-          EDL
+          WantedBy = multi-user.target
+          EOL
           fi
           
           sudo systemctl daemon-reload
