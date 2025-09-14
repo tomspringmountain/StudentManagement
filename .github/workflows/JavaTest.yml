@@ -8,10 +8,11 @@ on:
     branches: [ "main" ]
 
 env:
-  ES2_USER: 'ec2-user'
-  ES2_HOST: '43.206.231.123'
+  EC2_USER: 'ec2-user'
+  EC2_HOST: '43.206.231.123'
   SRC_PATH: 'build/libs/*.jar'
   DEST_PATH: '/home/ec2-user/StudentManagement.jar'
+
 
 jobs:
   build:
