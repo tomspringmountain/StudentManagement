@@ -9,7 +9,7 @@ on:
 
 env:
   ES2_USER: 'ec2-user'
-  ES2_HOST: '57.181.27.239'
+  ES2_HOST: '43.206.231.123'
   SRC_PATH: 'build/libs/*.jar'
   DEST_PATH: '/home/ec2-user/StudentManagement.jar'
 
@@ -46,7 +46,7 @@ jobs:
         PRIVATE_KEY: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        scp -o StrictHostKeyChecking=no -i private_key $SRC_PATH $SRC_USER@$EC2_HOST:$DEST_PATH
+        scp -o StrictHostKeyChecking=no -i private_key $SRC_PATH $EC2_USER@$EC2_HOST:$DEST_PATH
 
     - name: SSH Application Deploy
       uses: appleboy/ssh-action@master
